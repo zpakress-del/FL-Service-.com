@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="cadastro.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(180deg, #090909 0%, #141414 48%, #141414 100%); color: #fff; margin: 0; padding: 40px; min-height: 100vh; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
+    h1 { color: #b00000; margin-bottom: 16px; }
+    p { color: #ccc; margin-bottom: 32px; }
+    .main-btn { display: inline-block; padding: 12px 28px; background: #b00000; color: #fff; border: none; border-radius: 24px; font-size: 1.1rem; font-weight: bold; text-decoration: none; transition: background 0.2s; box-shadow: 0 2px 8px #000a; }
+    .main-btn:hover { background: #d84747; color: #fff; }
+    .register-box {
+      background: linear-gradient(180deg, #090909 0%, #141414 48%, #141414 100%);
+      border-radius: 18px;
+      box-shadow: 0 0 20px #000a;
+      padding: 40px 32px 32px 32px;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      color: #ccc;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: none;
+      border-radius: 8px;
+      background: #121212;
+      color: #fff;
+      font-size: 1rem;
+    }
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: #b00000;
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #000a;
+    }
+    button[type="submit"]:hover {
+      background: #d84747;
+      color: #fff;
+    }
+    .logo-container {
+      text-align: center;
+    }
+    .logo-container img {
+      max-width: 420px;
+      height: auto;
+    }
+    main {
+      flex-shrink: 0;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="logo-container">
+    <img src="imagem/logo.img05.png" alt="Logo">
+  </div>
+  <main>
+    <h1>Cadastro de usuário</h1>
+    <p>Informe seus dados pessoais para criar sua conta.</p>
+    <form id="cadastro-form" onsubmit="cadastrarUsuario(); return false;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Nome completo</label>
+          <input id="name" type="text" placeholder="Seu nome completo" />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" placeholder="seu@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Telefone</label>
+          <input id="phone" type="tel" placeholder="(11) 91234-5678" />
+        </div>
+        <div class="form-group">
+          <label for="cpf">CPF</label>
+          <input id="cpf" type="text" placeholder="000.000.000-00" />
+        </div>
+        <div class="form-group">
+          <label for="profissao">Profissão</label>
+          <input id="profissao" type="text" placeholder="Ex: Eletricista, Designer, etc." />
+        </div>
+        <div class="form-group">
+          <label for="foto">Foto de Perfil</label>
+          <input id="foto" type="file" accept="image/*" />
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="Escolha uma senha" />
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar senha</label>
+          <input id="confirmPassword" type="password" placeholder="Repita a senha" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="primary">Cadastrar</button>
+        <button type="button" class="secondary" onclick="location.href='index.html'">Voltar ao login</button>
+      </div>
+      <p id="cadastro-error" class="error"></p>
+    </form>
+  </main>
+  <script>
+    const senhaInput = document.getElementById('password');
+    const confirmarInput = document.getElementById('confirmPassword');
+    const erroInput = document.getElementById('cadastro-error');
+
+    function validatePasswordMatch() {
+      const senha = senhaInput.value;
+      const confirmar = confirmarInput.value;
+      if (!senha && !confirmar) {
+        senhaInput.classList.remove('input-invalid');
+        confirmarInput.classList.remove('input-invalid');
+        erroInput.style.display = 'none';
+        return;
+      }
+      if (senha !== confirmar) {
+        confirmarInput.classList.add('input-invalid');
+        erroInput.textContent = 'As senhas devem ser iguais.';
+        erroInput.style.display = 'block';
+      } else {
+        confirmarInput.classList.remove('input-invalid');
+        erroInput.style.display = 'none';
+      }
+    }
+
+    senhaInput.addEventListener('input', validatePasswordMatch);
+    confirmarInput.addEventListener('input', validatePasswordMatch);
+
+    function cadastrarUsuario() {
+      const nome = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const telefone = document.getElementById('phone').value.trim();
+      const cpf = document.getElementById('cpf').value.trim();
+      const profissao = document.getElementById('profissao').value.trim();
+      const senha = senhaInput.value;
+      const confirmar = confirmarInput.value;
+      const erro = erroInput;
+      const fotoInput = document.getElementById('foto');
+
+      if (!nome || !email || !telefone || !cpf || !profissao || !senha || !confirmar) {
+        erro.textContent = 'Preencha todos os campos antes de cadastrar.';
+        erro.style.display = 'block';
+        return;
+      }
+      if (senha !== confirmar) {
+        erro.textContent = 'As senhas não coincidem.';
+        erro.style.display = 'block';
+        senhaInput.classList.add('input-invalid');
+        confirmarInput.classList.add('input-invalid');
+        return;
+      }
+      if (!email.includes('@')) {
+        erro.textContent = 'Informe um e-mail válido.';
+        erro.style.display = 'block';
+        return;
+      }
+
+      // Foto como base64
+      const file = fotoInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          salvarUsuario(nome, email, telefone, cpf, profissao, senha, e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        salvarUsuario(nome, email, telefone, cpf, profissao, senha, '');
+      }
+    }
+
+    function salvarUsuario(nome, email, telefone, cpf, profissao, senha, foto) {
+      const usuarios = JSON.parse(localStorage.getItem('usuariosVagasPF') || '[]');
+      const usuario = { nome, email, telefone, cpf, profissao, senha, foto };
+      const registroExistente = usuarios.find(u => u.email === email);
+      if (registroExistente) {
+        erroInput.textContent = 'Este e-mail já está cadastrado. Use um e-mail diferente ou faça login.';
+        erroInput.style.display = 'block';
+        return;
+      }
+      usuarios.push(usuario);
+      localStorage.setItem('usuariosVagasPF', JSON.stringify(usuarios));
+      localStorage.setItem('cadastroConcluido', 'true');
+      localStorage.removeItem('usuarioLogado');
+      erroInput.style.display = 'none';
+      window.location.href = 'cadastro-sucesso.html';
+    }
+
+    // Salva dados do cadastro no Local Storage
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const nome = document.getElementById('nome').value;
+        const usuario = document.getElementById('usuario').value;
+        const email = document.getElementById('email').value;
+        const senha = document.getElementById('senha').value;
+        localStorage.setItem('userData', JSON.stringify({ nome, usuario, email, senha }));
+    });
+  </script>
+  <script>
+    function aplicarTema(tema) {
+        if (tema === 'claro') {
+            let estilo = document.getElementById('tema-claro-style');
+            if (!estilo) {
+                estilo = document.createElement('style');
+                estilo.id = 'tema-claro-style';
+                document.head.appendChild(estilo);
+            }
+            estilo.textContent = `
+                body { background: linear-gradient(180deg, #ffffff 0%, #f0f8fb 48%, #f0f8fb 100%) !important; color: #1565c0 !important; }
+                .register-box { background: linear-gradient(180deg, #ffffff 0%, #f0f8fb 48%, #f0f8fb 100%) !important; border-color: #b3e5fc !important; }
+                h1 { color: #2196f3 !important; }
+                label { color: #1976d2 !important; }
+                input[type="text"], input[type="email"], input[type="password"] { background: #ffffff !important; color: #1565c0 !important; border-color: #90caf9 !important; }
+                button[type="submit"] { background: #2196f3 !important; color: #ffffff !important; border-color: #2196f3 !important; }
+                button[type="submit"]:hover { background: #1976d2 !important; }
+                .secondary { background: #e8f4f8 !important; color: #2196f3 !important; border-color: #2196f3 !important; }
+                .secondary:hover { background: #d1ecf1 !important; }
+            `;
+        } else {
+            const estilo = document.getElementById('tema-claro-style');
+            if (estilo) estilo.remove();
+        }
+    }
+    window.onload = function() {
+        const temaSalvo = localStorage.getItem('tema') || 'escuro';
+        aplicarTema(temaSalvo);
+    };
+  </script>
+</body>
+</html>
